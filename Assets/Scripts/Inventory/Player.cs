@@ -20,6 +20,12 @@ public class Player: MonoBehaviour
     [SerializeField] private LayerMask interactableLayer; // アイテムのレイヤーを指定
     private ItemPickupUI currentUI = null;
 
+    private bool isPlayerControlEnabled = true;
+
+
+
+
+
     private void Awake()
     {
         //コンポーネントを取得
@@ -95,11 +101,11 @@ public class Player: MonoBehaviour
             GameObject itemObj = currentUI.gameObject;
 
             // WorldItem スクリプトを取得
-            WorldItem worldItem = itemObj.GetComponentInParent<WorldItem>(); // ここを変更！
+            WorldItem worldItem = itemObj.GetComponentInParent<WorldItem>(); 
             if (worldItem != null)
             {
                 InventoryItem newItem = worldItem.CreateInventoryItem();
-                InVentoryManeger.Instance.AddItem(newItem); // ← インベントリに追加
+                InVentoryManeger.Instance.AddItem(newItem); //  インベントリに追加
             }
             else
             {
@@ -114,6 +120,8 @@ public class Player: MonoBehaviour
   
     private void FixedUpdate()
     {
+        if (!isPlayerControlEnabled) return;  // 操作無効なら処理をスキップ
+
         // 前後左右への移動を処理
         if (rb != null)
         {
@@ -141,5 +149,10 @@ public class Player: MonoBehaviour
         // Moveの入力が無くなったら移動を止める
         moveInput = Vector2.zero;
         animator.SetFloat("Speed", 0f);
+    }
+
+    public void SetPlayerControl(bool enabled)
+    {
+        isPlayerControlEnabled = enabled;
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InVentoryManeger : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class InVentoryManeger : MonoBehaviour
     [SerializeField] private Transform itemGrid; // GridのTransform
     [SerializeField] private GameObject itemUIPrefab; // InventoryItemUIのプレハブ
 
+    [HideInInspector] public Button lastCreatedButton;
+
     private void Awake()
     {
         if (Instance == null)
@@ -19,23 +23,45 @@ public class InVentoryManeger : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void AddItem(InventoryItem item)
+    public void AddItem(InventoryItem newItem)
     {
-        items.Add(item);
-        Debug.Log($"{item.itemName} をインベントリに追加しました");
-
-        // UIに追加
-        GameObject uiObj = Instantiate(itemUIPrefab, itemGrid);
-        InventoryItemUI ui = uiObj.GetComponent<InventoryItemUI>();
-        if (ui != null)
+        // すでに持っているかチェック（名前で判定）
+        InventoryItem existingItem = items.Find(i => i.itemName == newItem.itemName);
+        if (existingItem != null)
         {
-            ui.Setup(item);
+            existingItem.count++;
+            Debug.Log($"{newItem.itemName} を追加（現在: {existingItem.count}個）");
+
+            // UI更新：リストから該当UIを探す
+            InventoryItemUI[] uiList = itemGrid.GetComponentsInChildren<InventoryItemUI>();
+            foreach (var ui in uiList)
+            {
+                if (ui.ItemName == newItem.itemName)
+                {
+                    ui.UpdateCount(existingItem.count); // ← UIを更新
+                    return;
+                }
+            }
         }
         else
         {
-            Debug.LogWarning("InventoryItemUI スクリプトがプレハブに付いてません！");
-        }
+            items.Add(newItem);
+            Debug.Log($"{newItem.itemName} をインベントリに追加しました");
 
+            // UIに新しく追加
+            GameObject uiObj = Instantiate(itemUIPrefab, itemGrid);
+            InventoryItemUI ui = uiObj.GetComponent<InventoryItemUI>();
+            if (ui != null)
+            {
+                ui.Setup(newItem);
+            }
+
+            Button b = uiObj.GetComponent<Button>();
+            if (b != null)
+            {
+                lastCreatedButton = b;
+            }
+        }
     }
     void Update()
     {

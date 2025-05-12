@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections;
+using UnityEngine.InputSystem;
 
 public class InventoryToggle : MonoBehaviour
 {
@@ -11,12 +13,29 @@ public class InventoryToggle : MonoBehaviour
     
 
     private bool inventoryOpen = false;
+    private bool isSwitchingInventory = false; // 入力の多重呼び出し防止用
 
     private void Awake()
     {
         controls = new MyControls();
         controls.Player.Inventory.performed += _ => ToggleInventory();
         controls.UI.Inventory.performed += _ => ToggleInventory();
+    }
+
+    private void Update()
+    {
+        if (inventoryOpen && Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            GameObject selected = EventSystem.current.currentSelectedGameObject;
+            if (selected != null)
+            {
+                var itemUI = selected.GetComponent<InventoryItemUI>();
+                if (itemUI != null)
+                {
+                    itemUI.OnClick();
+                }
+            }
+        }
     }
 
     private void OnEnable()
@@ -29,33 +48,56 @@ public class InventoryToggle : MonoBehaviour
     }
     private void ToggleInventory()
     {
+        if (isSwitchingInventory) return;
+        StartCoroutine(InventoryToggleRoutine());
+    }
+
+    private IEnumerator InventoryToggleRoutine()
+    {
+        isSwitchingInventory = true;
+
         inventoryOpen = !inventoryOpen;
         inventoryPanel.SetActive(inventoryOpen);
 
-        Debug.Log("インベントリ状態切替：" + inventoryOpen);
+        Debug.Log("ToggleInventory() 呼ばれた: " + inventoryOpen);
 
         if (inventoryOpen)
         {
-            // アクションマップを UI に切り替え
+            Debug.Log("インベントリ開いた → StartCoroutine 呼び出し予定");
+
             controls.Player.Disable();
             controls.UI.Enable();
 
-            // 最初のボタンにフォーカスを当てる（後述）
-            if (firstSelectable != null)
+            FindObjectOfType<Player>().SetPlayerControl(false);
+
+            yield return null; // 1フレーム待ってから選択
+            Button[] buttons = inventoryPanel.GetComponentsInChildren<Button>();
+            if (buttons.Length > 0)
             {
-                EventSystem.current.SetSelectedGameObject(firstSelectable.gameObject);
+                EventSystem.current.SetSelectedGameObject(buttons[0].gameObject);
+                Debug.Log("自動で最初のボタン選択: " + buttons[0].name);
+            }
+            else
+            {
+                Debug.LogWarning("選択できるボタンが見つかりませんでした");
             }
         }
         else
         {
-            // アクションマップを Player に戻す
             controls.UI.Disable();
             controls.Player.Enable();
+
+            FindObjectOfType<Player>().SetPlayerControl(true);
             EventSystem.current.SetSelectedGameObject(null);
+
+            SelectedItemDisplay display = FindObjectOfType<SelectedItemDisplay>();  //アイテム詳細画面を消す
+            if (display != null)
+            {
+                display.Hide();
+            }
         }
-    }
-    void Update()
-    {
-        
+
+        yield return new WaitForSeconds(0.2f); // 連続入力防止（0.2秒だけ受付無効）
+        isSwitchingInventory = false;
     }
 }
