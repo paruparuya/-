@@ -48,9 +48,13 @@ public class Player: MonoBehaviour
         Vector3 origin = transform.position + Vector3.up * rayHeight;　//レイの中心決め、キャラの中心から高さを計算
         Vector3 direction = transform.forward;　　//レイの向きを決める、今回は前方向に
 
+        Debug.DrawRay(origin, direction * rayDistance, Color.red);  //デバッグレイ
+
         if (Physics.Raycast(origin, direction, out RaycastHit hit, rayDistance, interactableLayer))　
         {
             GameObject target = hit.collider.gameObject;
+
+            Debug.Log("Raycast hit: " + target.name);
 
             // アイテムにUIがあるなら表示
             ItemPickupUI ui = target.GetComponent<ItemPickupUI>();
