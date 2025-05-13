@@ -34,7 +34,7 @@ public class InventoryItemUI : MonoBehaviour
         Debug.Log("アイテムを選択しました：" + nameText.text);
         
         // アイテム詳細を表示
-        SelectedItemDisplay display = FindObjectOfType<SelectedItemDisplay>();
+        SelectedItemDisplay display = Object.FindFirstObjectByType<SelectedItemDisplay>();
         if (display != null)
         {
             display.ShowItem(storedItem);

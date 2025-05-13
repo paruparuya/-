@@ -10,7 +10,6 @@ public class InventoryToggle : MonoBehaviour
     [SerializeField] private Button firstSelectable; // ← 最初に選ばせたいボタン（InventoryItemUIのボタン）
 
     private MyControls controls;
-    
 
     private bool inventoryOpen = false;
     private bool isSwitchingInventory = false; // 入力の多重呼び出し防止用
@@ -68,7 +67,7 @@ public class InventoryToggle : MonoBehaviour
             controls.Player.Disable();
             controls.UI.Enable();
 
-            FindObjectOfType<Player>().SetPlayerControl(false);
+            Object.FindFirstObjectByType<Player>().SetPlayerControl(false);
 
             yield return null; // 1フレーム待ってから選択
             Button[] buttons = inventoryPanel.GetComponentsInChildren<Button>();
@@ -87,10 +86,10 @@ public class InventoryToggle : MonoBehaviour
             controls.UI.Disable();
             controls.Player.Enable();
 
-            FindObjectOfType<Player>().SetPlayerControl(true);
+            Object.FindFirstObjectByType<Player>().SetPlayerControl(true);
             EventSystem.current.SetSelectedGameObject(null);
 
-            SelectedItemDisplay display = FindObjectOfType<SelectedItemDisplay>();  //アイテム詳細画面を消す
+            SelectedItemDisplay display = Object.FindFirstObjectByType<SelectedItemDisplay>();  //アイテム詳細画面を消す
             if (display != null)
             {
                 display.Hide();

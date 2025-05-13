@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.UI.Image;
 
 public class Player: MonoBehaviour
@@ -22,6 +23,7 @@ public class Player: MonoBehaviour
 
     private bool isPlayerControlEnabled = true;
 
+    private DoorController currentDoor = null;  //ドアをチェック
 
 
 
@@ -48,10 +50,10 @@ public class Player: MonoBehaviour
 
         if (Physics.Raycast(origin, direction, out RaycastHit hit, rayDistance, interactableLayer))　
         {
-            GameObject item = hit.collider.gameObject;
+            GameObject target = hit.collider.gameObject;
 
             // アイテムにUIがあるなら表示
-            ItemPickupUI ui = item.GetComponent<ItemPickupUI>();
+            ItemPickupUI ui = target.GetComponent<ItemPickupUI>();
             if (ui != null)
             {
                 if (currentUI != ui)
@@ -61,6 +63,11 @@ public class Player: MonoBehaviour
                     currentUI.ShowPickupUI(true);
                 }
             }
+
+            // ドアチェック
+            DoorController door = target.GetComponent<DoorController>();
+            currentDoor = door; // 見ているドアを記憶（あれば）
+
         }
         else
         {
@@ -69,6 +76,8 @@ public class Player: MonoBehaviour
                 currentUI.ShowPickupUI(false);
                 currentUI = null;
             }
+
+            currentDoor = null; // 何も見ていない
         }
     }
 
@@ -115,6 +124,13 @@ public class Player: MonoBehaviour
             Destroy(currentUI.gameObject); // アイテムごと削除
             currentUI = null;
         }
+
+        // ドアが目の前にあれば開け閉め
+        if (currentDoor != null)
+        {
+            currentDoor.ToggleDoor();
+        }
+
     }
 
   
