@@ -13,7 +13,7 @@ public class Playercontroller : MonoBehaviour
     private MyControls controls;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
         controls = new MyControls();

@@ -23,7 +23,7 @@ public class InventoryToggle : MonoBehaviour
 
     private void Update()
     {
-        if (inventoryOpen && Keyboard.current.eKey.wasPressedThisFrame)
+        if (inventoryOpen && Keyboard.current.eKey.wasPressedThisFrame)　　//ここインプットアクションに変えれたかな
         {
             GameObject selected = EventSystem.current.currentSelectedGameObject;
             if (selected != null)

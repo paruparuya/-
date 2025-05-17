@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ItemPickupUI : MonoBehaviour
 {
-    [SerializeField] private Canvas pickupCanvas; // ワールドスペースCanvas
+    [SerializeField] private Canvas pickupCanvas; 
     [SerializeField] private TextMeshProUGUI pickupText;
 
     private void Start()

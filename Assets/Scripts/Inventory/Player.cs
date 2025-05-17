@@ -25,7 +25,7 @@ public class Player: MonoBehaviour
 
     private DoorController currentDoor = null;  //ドアをチェック
 
-
+    private ChestOpen currentChest = null;  //宝箱をチェック
 
 
     private void Awake()
@@ -72,6 +72,8 @@ public class Player: MonoBehaviour
             DoorController door = target.GetComponent<DoorController>();
             currentDoor = door; // 見ているドアを記憶（あれば）
 
+            ChestOpen chest = target.GetComponent<ChestOpen>();
+            currentChest = chest; 
         }
         else
         {
@@ -82,6 +84,7 @@ public class Player: MonoBehaviour
             }
 
             currentDoor = null; // 何も見ていない
+            currentChest = null;
         }
     }
 
@@ -133,6 +136,14 @@ public class Player: MonoBehaviour
         if (currentDoor != null)
         {
             currentDoor.ToggleDoor();
+        }
+        if (currentChest != null)
+        {
+            currentChest.TryOpenChest();
+        }
+        else
+        {
+            Debug.Log("currentChest は null でした");
         }
 
     }

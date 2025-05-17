@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class InVentoryManeger : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class InVentoryManeger : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance == null)　　//インベントリをひとつだけにする仕組み
             Instance = this;
         else
             Destroy(gameObject);
@@ -62,6 +63,11 @@ public class InVentoryManeger : MonoBehaviour
                 lastCreatedButton = b;
             }
         }
+    }
+
+    public bool HasItemWithID(string id)
+    {
+        return items.Any(item => item.id == id);
     }
     void Update()
     {
