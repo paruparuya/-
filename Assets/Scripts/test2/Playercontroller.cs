@@ -22,6 +22,7 @@ public class Playercontroller : MonoBehaviour
         controls.Player.Jump.performed += OnJumpPerformed;
         controls.Player.Move.performed += OnMovePerformed;
         controls.Player.Move.canceled += OnMoveCanceled;
+        controls.Player.Move.performed += OnSprintPerformed;
     }
 
     // Update is called once per frame
@@ -77,6 +78,10 @@ public class Playercontroller : MonoBehaviour
        
     }
 
+    private void OnSprintPerformed(InputAction.CallbackContext context)
+    {
+
+    }
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         // Move‚Ì“ü—Í‚ª–³‚­‚È‚Á‚½‚çˆÚ“®‚ðŽ~‚ß‚é
