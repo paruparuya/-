@@ -11,7 +11,8 @@ public class TriggerChaseEnemy : MonoBehaviour
     private float idleTime = 0f;
     private float returnDelay = 5f;
     private Vector3 lastPosition;
-    
+
+    private bool shouldCheckReturn = false;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -36,7 +37,7 @@ public class TriggerChaseEnemy : MonoBehaviour
         else
         {
             
-            agent.velocity = Vector3.zero; 
+             
 
             if (Vector3.Distance(transform.position, lastPosition) < 0.05f)
             {
@@ -45,6 +46,7 @@ public class TriggerChaseEnemy : MonoBehaviour
                 if (idleTime >= returnDelay)
                 {
                     agent.SetDestination(startPosition);
+                    //shouldCheckReturn = false;
                 }
             }
             else
@@ -69,6 +71,11 @@ public class TriggerChaseEnemy : MonoBehaviour
         if (other.CompareTag("Palyer"))
         {
             isPlayerInRange = false;
+            //shouldCheckReturn = true;
+
+            agent.ResetPath();
+            agent.velocity = Vector3.zero;
+
         }
     }
 }

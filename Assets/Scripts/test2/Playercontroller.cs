@@ -8,6 +8,9 @@ public class Playercontroller : MonoBehaviour
     [SerializeField] private float turnSpeed = 100f;   // ‰ñ“]‘¬“x
     private Vector2 moveInput;
 
+    [SerializeField] private GameObject attackPrefab;
+    [SerializeField] private Transform firePoint;
+
 
     private Rigidbody rb;
     private MyControls controls;
@@ -23,6 +26,7 @@ public class Playercontroller : MonoBehaviour
         controls.Player.Move.performed += OnMovePerformed;
         controls.Player.Move.canceled += OnMoveCanceled;
         controls.Player.Move.performed += OnSprintPerformed;
+        controls.Player.Attack.performed += OnAttackPerformed;
     }
 
     // Update is called once per frame
@@ -87,5 +91,14 @@ public class Playercontroller : MonoBehaviour
         // Move‚Ì“ü—Í‚ª–³‚­‚È‚Á‚½‚çˆÚ“®‚ğ~‚ß‚é
         moveInput = Vector2.zero;
        
+    }
+
+    private void OnAttackPerformed(InputAction.CallbackContext context)
+    {
+        if (attackPrefab != null && firePoint != null)
+        {
+            // ’e‚ğ¶¬iˆÊ’u‚ÆŒü‚«‚ğfirePoint‚©‚çj
+             Instantiate(attackPrefab, firePoint.position, firePoint.rotation);
+        }
     }
 }
