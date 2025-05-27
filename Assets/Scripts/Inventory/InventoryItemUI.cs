@@ -11,6 +11,8 @@ public class InventoryItemUI : MonoBehaviour
     private InventoryItem storedItem;
     public string ItemName => storedItem.itemName;// ← 比較用のプロパティ
 
+    public string ItemID => storedItem.id;
+
 
     public void Setup(InventoryItem item)
     {

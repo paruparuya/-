@@ -73,4 +73,25 @@ public class InVentoryManeger : MonoBehaviour
     {
         
     }
+
+    public void RemoveItemByID(string id)
+    {
+        InventoryItem itemToRemove = items.Find(item => item.id == id);
+        if (itemToRemove != null)
+        {
+            items.Remove(itemToRemove);
+
+            InventoryItemUI[] uis = itemGrid.GetComponentsInChildren<InventoryItemUI>();
+            foreach(InventoryItemUI ui in uis)
+            {
+                if(ui.ItemID == id)
+                {
+                    Destroy(ui.gameObject);
+                    break;
+                }
+            }
+
+            Debug.Log($"{id} ‚ğƒCƒ“ƒxƒ“ƒgƒŠ‚©‚çíœ‚µ‚Ü‚µ‚½");
+        }
+    }
 }

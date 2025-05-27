@@ -36,9 +36,7 @@ public class TriggerChaseEnemy : MonoBehaviour
         }
         else
         {
-            
-             
-
+       
             if (Vector3.Distance(transform.position, lastPosition) < 0.05f)
             {
                 idleTime += Time.deltaTime;

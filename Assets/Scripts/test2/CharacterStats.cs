@@ -10,14 +10,14 @@ public class CharacterStats : MonoBehaviour
    
     void Start()
     {
-        if(PlayerPrefs.HasKey("PlayerHP"))
+        if(PlayerPrefs.HasKey("PlayerHP"))　　//もしセーブデータがあれば
         {
-            currentHP = PlayerPrefs.GetInt("PlayerHP");
+            currentHP = PlayerPrefs.GetInt("PlayerHP");  //セーブされていたHPを反映
             Debug.Log("HPを読み込みました" +  currentHP);
         }
         else
         {
-            currentHP = maxHP;
+            currentHP = maxHP;  //セーブデータがなければHPMAXで開始
         }
     }
 
