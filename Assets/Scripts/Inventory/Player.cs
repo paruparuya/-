@@ -121,7 +121,7 @@ public class Player: MonoBehaviour
             if (worldItem != null)
             {
                 InventoryItem newItem = worldItem.CreateInventoryItem();
-                InVentoryManeger.Instance.AddItem(newItem); //  インベントリに追加
+                InventoryManeger.Instance.AddItem(newItem); //  インベントリに追加
             }
             else
             {

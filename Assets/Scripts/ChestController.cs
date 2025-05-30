@@ -47,7 +47,7 @@ public class ChestController : MonoBehaviour
         // アイテム追加処理（InventoryManager 経由）
         if (itemToGive != null)
         {
-            InVentoryManeger.Instance.AddItem(itemToGive);
+            InventoryManeger.Instance.AddItem(itemToGive);
         }
 
         Debug.Log("宝箱を開けました！");

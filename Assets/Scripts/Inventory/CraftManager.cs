@@ -38,14 +38,14 @@ public class CraftManager : MonoBehaviour
             {
                 foreach (string requiredID in recipe.requiredItemIDs)  //素材を検索
                 {
-                    InVentoryManeger.Instance.RemoveItemByID(requiredID);
+                    InventoryManeger.Instance.RemoveItemByID(requiredID);
                 }
 
                 WorldItem resultItem = allItemPrefabs.Find(item => item.id == recipe.resultItemID);
                 if (resultItem != null)
                 {
                     InventoryItem craftedItem = resultItem.CreateInventoryItem();
-                    InVentoryManeger.Instance.AddItem(craftedItem);
+                    InventoryManeger.Instance.AddItem(craftedItem);
                     Debug.Log("完成品をインベントリに追加: " + craftedItem.itemName);
                 }
                 else
@@ -64,7 +64,7 @@ public class CraftManager : MonoBehaviour
     {
         List<string> currentItemIDs = new List<string>();
         
-        foreach (InventoryItem item in InVentoryManeger.Instance.items)
+        foreach (InventoryItem item in InventoryManeger.Instance.items)
         {
             currentItemIDs.Add(item.id);
         }

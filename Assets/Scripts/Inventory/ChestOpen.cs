@@ -16,7 +16,7 @@ public class ChestOpen : MonoBehaviour
         if (isOpen)
             return;
 
-        if(InVentoryManeger.Instance.HasItemWithID(keyID))
+        if(InventoryManeger.Instance.HasItemWithID(keyID))
         {
             ToggleChest();
         }
